@@ -94,7 +94,7 @@ class BookSwapApp extends StatelessWidget {
               return const LoginScreen();
             }
             
-            return HomeScreen();
+            return const HomeScreen();
           },
         ),
         debugShowCheckedModeBanner: false,

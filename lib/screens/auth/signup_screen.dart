@@ -182,17 +182,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _passwordController.text.trim(),
                                 _displayNameController.text.trim(),
                               );
+                              if (!mounted) return;
                               if (success) {
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Account created! Please check your email for verification.'),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Account created! Please check your email for verification.'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                                Navigator.pop(context);
                               }
                             }
                           },

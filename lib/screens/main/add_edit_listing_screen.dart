@@ -211,59 +211,56 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
 
       setState(() => _isLoading = false);
 
+      if (!mounted) return;
+      
       if (success) {
         debugPrint('✅ Success! Showing confirmation and closing screen...');
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.check_circle, color: Colors.white),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      widget.book == null 
-                          ? 'Book added to your listings!' 
-                          : 'Book updated successfully!',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        }
-        
-        // Wait a moment then close
-        await Future.delayed(Duration(milliseconds: 300));
-        if (context.mounted) {
-          Navigator.pop(context);
-        }
-      } else if (!success) {
-        debugPrint('❌ Failed to add/update book');
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error: ${bookProvider.error ?? "Failed to save book"}'),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 3),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      setState(() => _isLoading = false);
-      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    widget.book == null 
+                        ? 'Book added to your listings!' 
+                        : 'Book updated successfully!',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        
+        // Wait a moment then close
+        await Future.delayed(const Duration(milliseconds: 300));
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      } else {
+        debugPrint('❌ Failed to add/update book');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${bookProvider.error ?? "Failed to save book"}'),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
           ),
         );
       }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
