@@ -124,13 +124,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _emailController.text.trim(),
                                 _passwordController.text.trim(),
                               );
-                              if (!success && mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Login failed. Please try again.'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
+                              if (!success) {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Login failed. Please try again.'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                               }
                             }
                           },

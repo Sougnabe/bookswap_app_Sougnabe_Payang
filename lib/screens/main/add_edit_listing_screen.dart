@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -157,7 +158,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
               finalImageUrl = bookProvider.storageService.getPlaceholderImage(
                 _titleController.text.trim(),
               );
-              print('📌 Using placeholder image: $finalImageUrl');
+              debugPrint('📌 Using placeholder image: $finalImageUrl');
             } else {
               // User cancelled
               setState(() => _isLoading = false);
@@ -168,7 +169,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
             finalImageUrl = bookProvider.storageService.getPlaceholderImage(
               _titleController.text.trim(),
             );
-            print('📌 Using placeholder image (no dialog): $finalImageUrl');
+            debugPrint('📌 Using placeholder image (no dialog): $finalImageUrl');
           }
         }
       }
@@ -177,10 +178,10 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
         throw Exception('Please select an image');
       }
 
-      print('📚 Adding book to Firestore...');
-      print('   Title: ${_titleController.text.trim()}');
-      print('   Author: ${_authorController.text.trim()}');
-      print('   Image: $finalImageUrl');
+      debugPrint('📚 Adding book to Firestore...');
+      debugPrint('   Title: ${_titleController.text.trim()}');
+      debugPrint('   Author: ${_authorController.text.trim()}');
+      debugPrint('   Image: $finalImageUrl');
 
       bool success;
       if (widget.book == null) {
@@ -192,7 +193,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
           ownerId: authProvider.user!.id,
           ownerName: authProvider.user!.displayName,
         );
-        print(success ? '✅ Book created in Firestore!' : '❌ Failed to create book');
+        debugPrint(success ? '✅ Book created in Firestore!' : '❌ Failed to create book');
       } else {
         final updatedBook = BookListing(
           id: widget.book!.id,
@@ -210,44 +211,48 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
 
       setState(() => _isLoading = false);
 
-      if (success && context.mounted) {
-        print('✅ Success! Showing confirmation and closing screen...');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    widget.book == null 
-                        ? 'Book added to your listings!' 
-                        : 'Book updated successfully!',
-                    style: TextStyle(fontSize: 15),
+      if (success) {
+        debugPrint('✅ Success! Showing confirmation and closing screen...');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      widget.book == null 
+                          ? 'Book added to your listings!' 
+                          : 'Book updated successfully!',
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
             ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+          );
+        }
         
         // Wait a moment then close
         await Future.delayed(Duration(milliseconds: 300));
         if (context.mounted) {
           Navigator.pop(context);
         }
-      } else if (!success && context.mounted) {
-        print('❌ Failed to add/update book');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${bookProvider.error ?? "Failed to save book"}'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
+      } else if (!success) {
+        debugPrint('❌ Failed to add/update book');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${bookProvider.error ?? "Failed to save book"}'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
       }
     } catch (e) {
       setState(() => _isLoading = false);
