@@ -102,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _notificationsEnabled = value;
                       });
                     },
-                    activeColor: Colors.deepPurple,
+                    activeTrackColor: Colors.deepPurple,
                   ),
                   SwitchListTile(
                     title: const Text('Email Notifications'),
@@ -113,7 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _emailNotifications = value;
                       });
                     },
-                    activeColor: Colors.deepPurple,
+                    activeTrackColor: Colors.deepPurple,
                   ),
                 ],
               ),

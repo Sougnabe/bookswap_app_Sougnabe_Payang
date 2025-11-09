@@ -5,7 +5,7 @@ import 'package:bookswap_app/services/firestore_service.dart';
 class ChatProvider with ChangeNotifier {
   final FirestoreService _firestoreService;
   
-  Map<String, List<ChatMessage>> _chatMessages = {};
+  final Map<String, List<ChatMessage>> _chatMessages = {};
   bool _isLoading = false;
   String? _error;
 

@@ -336,7 +336,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<BookCondition>(
-                value: _selectedCondition,
+                initialValue: _selectedCondition,
                 decoration: InputDecoration(
                   labelText: 'Condition',
                   border: OutlineInputBorder(

@@ -129,7 +129,7 @@ class MyListingsScreen extends StatelessWidget {
                                           vertical: 4,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.deepPurple.withOpacity(0.1),
+                                          color: Colors.deepPurple.withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(4),
                                         ),
                                         child: Text(
@@ -149,8 +149,8 @@ class MyListingsScreen extends StatelessWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: book.isAvailable
-                                              ? Colors.green.withOpacity(0.1)
-                                              : Colors.orange.withOpacity(0.1),
+                                              ? Colors.green.withValues(alpha: 0.1)
+                                              : Colors.orange.withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(4),
                                         ),
                                         child: Text(
@@ -217,9 +217,9 @@ class MyListingsScreen extends StatelessWidget {
                                     ),
                                   );
                                   
-                                  if (confirmed == true && context.mounted) {
+                                  if (confirmed == true) {
                                     final success = await bookProvider.deleteBook(book.id);
-                                    if (success) {
+                                    if (success && context.mounted) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                           content: Text('Book deleted successfully'),
